@@ -13,8 +13,6 @@ python3 -m venv ansible
 source ansible/bin/activate
 pip3 install --upgrade pip
 pip3 install --upgrade ansible
-
-
 ```
 ## Customization:
 To customize the playbook edit `src/extra_vars.yaml `.
