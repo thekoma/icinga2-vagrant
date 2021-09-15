@@ -1,0 +1,10 @@
+[icinga2_api]
+transport = "api"
+host = "127.0.0.1"
+port = "5665"
+username = "{{ icinga_monitoring_module_apiuser }}"
+password = "{{ icinga_monitoring_module_apiuser_password }}"
+
+[icinga2_local] # This is deprecated
+transport = "local"
+path = "/var/run/icinga2/cmd/icinga2.cmd"

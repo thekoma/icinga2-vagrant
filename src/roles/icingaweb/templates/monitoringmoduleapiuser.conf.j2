@@ -1,0 +1,4 @@
+object ApiUser "{{ icinga_monitoring_module_apiuser }}" {
+  password = "{{ icinga_monitoring_module_apiuser_password }}"
+  permissions = [ "status/query", "actions/*", "objects/modify/*", "objects/query/*" ]
+}

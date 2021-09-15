@@ -1,0 +1,8 @@
+---
+  collections:
+  - #name: icinga.icinga
+    # name: https://github.com/Icinga/ansible-collection-icinga.git
+    name: https://github.com/thekoma/ansible-collection-icinga.git,add_command_feature
+    type: git
+  - name: community.mysql
+  - name: ansible.posix

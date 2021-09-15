@@ -1,0 +1,28 @@
+- name: Templating resources.ini
+  ansible.builtin.template:
+    src: resources.ini.j2
+    dest: /etc/icingaweb2/resources.ini
+    owner: apache
+    group: icingaweb2
+    mode: '0664'
+  notify: reload icinga2 service
+
+- name: Templating roles.ini
+  ansible.builtin.template:
+    src: roles.ini.j2
+    dest: /etc/icingaweb2/roles.ini
+    owner: apache
+    group: icingaweb2
+    mode: '0664'
+  notify: reload icinga2 service
+
+- name: "Templating icingaweb2apiuser.conf"
+  ansible.builtin.template:
+    src: monitoringmoduleapiuser.conf.j2
+    dest: /etc/icinga2/conf.d/monitoringmoduleapiuser.conf
+    owner: icinga
+    group: icinga
+    mode: '0640'
+  notify: reload icinga2 service
+
+

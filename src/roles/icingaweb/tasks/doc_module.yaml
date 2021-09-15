@@ -1,0 +1,9 @@
+- name: "Enable documentation module"        
+  ansible.builtin.file:
+    state: link
+    dest: /etc/icingaweb2/enabledModules/doc
+    src: /usr/share/icingaweb2/modules/doc
+    owner: apache
+    group: icingaweb2
+    mode: '0755'
+

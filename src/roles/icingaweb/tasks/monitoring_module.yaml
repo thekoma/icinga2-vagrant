@@ -1,0 +1,40 @@
+- name: "Create Monitoring module directory"    
+  ansible.builtin.file:
+    path: /etc/icingaweb2/modules/monitoring
+    state: directory
+    owner: apache
+    group: icingaweb2
+    mode: '02775'
+
+- name: "Copy monitoring/config.ini"
+  ansible.builtin.copy:
+    src: monitoring_config.ini
+    dest: /etc/icingaweb2/modules/monitoring/config.ini
+    owner: apache
+    group: icingaweb2
+    mode: '0664'
+
+- name: "Copy monitoring/backends.ini"
+  ansible.builtin.copy:
+    src: monitoring_backends.ini
+    dest: /etc/icingaweb2/modules/monitoring/backends.ini
+    owner: apache
+    group: icingaweb2
+    mode: '0664'
+
+- name: "Templating monitoring/commandtransports.ini"
+  ansible.builtin.template:
+    src: monitoring_commandtransports.ini.j2
+    dest: /etc/icingaweb2/modules/monitoring/commandtransports.ini
+    owner: apache
+    group: icingaweb2
+    mode: '0664'
+
+- name: "Enable monitoring module"        
+  ansible.builtin.file:
+    state: link
+    dest: /etc/icingaweb2/enabledModules/monitoring
+    src: /usr/share/icingaweb2/modules/monitoring
+    owner: apache
+    group: icingaweb2
+    mode: '0755'

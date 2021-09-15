@@ -1,0 +1,19 @@
+- hosts: all
+  become: true
+  collections:
+    - icinga.icinga
+    - community.mysql
+    - ansible.posix
+  roles:
+    - repos
+    - icinga2
+    - icingaweb
+  pre_tasks:
+    - name: Set SELinux in permissive
+      import_tasks: tasks/selinux.yaml
+    - name: Prepare Remi Repo
+      import_tasks: tasks/remi.yaml
+    - name: Install Utils
+      import_tasks: tasks/utils.yaml
+    - name: Prepare Databases
+      import_tasks: tasks/databases.yaml

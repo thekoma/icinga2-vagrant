@@ -1,0 +1,5 @@
+.vagrant
+ansible
+icinga2.code-workspace
+ansible.cfg
+mitogen

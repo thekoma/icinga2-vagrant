@@ -1,0 +1,58 @@
+- name: Install dependencies
+  ansible.builtin.dnf:
+    name: 
+      - "mariadb"
+      - "mariadb-server"
+      - "python3-PyMySQL"
+    state: present
+
+- name: enable service
+  ansible.builtin.service:
+    name: mariadb
+    state: started
+    enabled: true
+
+# Create DB for icinga2 component
+- name: "Create a new database with name {{ icinga_ido_db  }}"
+  community.mysql.mysql_db:
+    name: "{{ icinga_ido_db }}"
+    state: present
+    encoding: "utf8"
+
+
+- name: "Create database user {{ icinga_ido_user }}"
+  community.mysql.mysql_user:
+    name: "{{ icinga_ido_user }}"
+    password: "{{ icinga_ido_password }}"
+    priv: "{{ icinga_ido_db  }}.*:ALL,GRANT"
+    state: present
+
+# Create DB for icingaweb2 component
+- name: "Create a new database with name {{ icingaweb2_db  }}"
+  community.mysql.mysql_db:
+    name: "{{ icingaweb2_db }}"
+    state: present
+    encoding: "utf8"
+
+
+- name: "Create database user {{ icingaweb2_db_user }}"
+  community.mysql.mysql_user:
+    name: "{{ icingaweb2_db_user }}"
+    password: "{{ icingaweb2_db_password }}"
+    priv: "{{ icingaweb2_db  }}.*:ALL,GRANT"
+    state: present
+
+# Create DB for Director component
+- name: "Create a new database with name {{ icinga_director_db  }}"
+  community.mysql.mysql_db:
+    name: "{{ icinga_director_db }}"
+    state: present
+    encoding: "utf8"
+
+
+- name: "Create database user {{ icinga_director_db_user }}"
+  community.mysql.mysql_user:
+    name: "{{ icinga_director_db_user }}"
+    password: "{{ icinga_director_db_password }}"
+    priv: "{{ icinga_director_db  }}.*:ALL,GRANT"
+    state: present

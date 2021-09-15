@@ -1,0 +1,11 @@
+---
+# handlers file for icingaweb
+- name: reload systemd
+  ansible.builtin.systemd:
+    daemon_reload: yes
+
+- name: run deploy
+  ansible.builtin.command: /bin/icingacli director config deploy 
+  register: deploy_config
+  failed_when:
+    - deploy_config.rc > 0

@@ -1,0 +1,6 @@
+- name: Allow apache to modify files in /etc/icingaweb2/
+  community.general.sefcontext:
+    target: '/etc/icingaweb2/(/.*)?'
+    setype: httpd_sys_rw_content_t
+    state: present
+  notify: reload icinga2 service

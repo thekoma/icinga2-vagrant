@@ -1,0 +1,44 @@
+
+- name: Copy authentication.ini
+  ansible.builtin.copy:
+    src: authentication.ini
+    dest: /etc/icingaweb2/authentication.ini
+    owner: apache
+    group: icingaweb2
+    mode: '0664'
+
+- name: Copy config.ini
+  ansible.builtin.copy:
+    src: config.ini
+    dest: /etc/icingaweb2/config.ini
+    owner: apache
+    group: icingaweb2
+    mode: '0664'
+
+- name: Copy groups.ini
+  ansible.builtin.copy:
+    src: groups.ini
+    dest: /etc/icingaweb2/groups.ini
+    owner: apache
+    group: icingaweb2
+    mode: '0664'
+
+- name: "Enable monitoring module"    
+  ansible.builtin.file:
+    path: /etc/icingaweb2/enabledModules/
+    state: directory
+    owner: apache
+    group: icingaweb2
+    mode: '02755'
+
+- name: "default redirect"
+  copy:
+    content: |
+      <?php
+      header("HTTP/1.1 301 Moved Permanently"); 
+      header("Location: /icingaweb2"); 
+      ?>
+    dest: /var/www/html/index.php
+    owner: apache
+    group: apache
+    mode: '0644'

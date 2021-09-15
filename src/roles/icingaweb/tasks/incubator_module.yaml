@@ -1,0 +1,23 @@
+- name: "Create incubator module directory"    
+  ansible.builtin.file:
+    path: /etc/icingaweb2/modules/incubator/
+    state: directory
+    owner: apache
+    group: icingaweb2
+    mode: '02775'
+
+- name: Git checkout incubator
+  ansible.builtin.git:
+    repo: "{{ incubator_repo }}"
+    dest: /usr/share/icingaweb2/modules/incubator
+    version: "v{{ incubator_version }}"
+    single_branch: yes
+
+- name: "Enable incubator module"        
+  ansible.builtin.file:
+    state: link
+    dest: /etc/icingaweb2/enabledModules/incubator
+    src: /usr/share/icingaweb2/modules/incubator
+    owner: apache
+    group: icingaweb2
+    mode: '0755'

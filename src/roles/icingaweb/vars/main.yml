@@ -1,0 +1,7 @@
+---
+# vars file for icingaweb
+director_repo: "https://github.com/icinga/icingaweb2-module-director"
+director_version: "1.8.1"
+
+incubator_repo: "https://github.com/icinga/icingaweb2-module-incubator"
+incubator_version: "0.6.0"

@@ -1,0 +1,118 @@
+- name: "Create Director module directory"    
+  ansible.builtin.file:
+    path: /etc/icingaweb2/modules/director/
+    state: directory
+    owner: apache
+    group: icingaweb2
+    mode: '02775'
+
+- name: "Add the user 'icingadirector'"
+  ansible.builtin.user:
+    name: icingadirector
+    comment: Icinga Director User
+    group: icingaweb2
+    shell: /sbin/nologin
+    home: /var/lib/icingadirector
+
+- name: "Set correct permission on /var/lib/icingadirector"
+  ansible.builtin.file:
+    path: /var/lib/icingadirector
+    state: directory
+    owner: icingadirector
+    group: icingaweb2
+    mode: '0750'
+
+- name: Git checkout director
+  ansible.builtin.git:
+    repo: "{{ director_repo }}"
+    dest: /usr/share/icingaweb2/modules/director
+    version: "v{{ director_version }}"
+    single_branch: yes
+
+- name: "Templating icingadirectorapiuser.conf"
+  ansible.builtin.template:
+    src: directorapiuser.conf.j2
+    dest: /etc/icinga2/conf.d/directorapiuser.conf
+    owner: icinga
+    group: icinga
+    mode: '0640'
+  notify: reload icinga2 service
+
+- name: "Templating icinga director config.ini"
+  ansible.builtin.template:
+    src: director_config.ini.j2
+    dest: /etc/icingaweb2/modules/director/config.ini
+    owner: apache
+    group: icingaweb2
+    mode: '0640'
+  notify: reload icinga2 service
+
+- name: "Templating icinga director kickstart.ini"
+  ansible.builtin.template:
+    src: director_kickstart.ini.j2
+    dest: /etc/icingaweb2/modules/director/kickstart.ini
+    owner: apache
+    group: icingaweb2
+    mode: '0640'
+  notify: reload icinga2 service
+
+- name: "Enable director module"        
+  ansible.builtin.file:
+    state: link
+    dest: /etc/icingaweb2/enabledModules/director
+    src: /usr/share/icingaweb2/modules/director
+    owner: apache
+    group: icingaweb2
+    mode: '0755'
+  register: enabled_first_time
+
+- name: "Create Director Service"
+  copy:
+    remote_src: yes
+    src: /usr/share/icingaweb2/modules/director/contrib/systemd/icinga-director.service
+    dest: /etc/systemd/system/icinga-director.service
+    owner: root
+    group: root
+    mode: '0644'
+  notify: reload systemd
+
+- name: Force all notified handlers to run at this point, not waiting for normal sync points
+  meta: flush_handlers
+
+- name: "Check if DB needs import"
+  ansible.builtin.command: /bin/icingacli director migration pending --verbose
+  register: migration
+  changed_when: migration.rc != 1
+  failed_when:
+    - migration.rc > 1
+
+- name: "Run Import if needed"
+  when: migration.rc == 0
+  ansible.builtin.command: /bin/icingacli director migration run --verbose
+  register: result_migration
+  failed_when:
+    - result_migration.rc > 0
+
+- name: Enable icinga-director and ensure it is not masked
+  ansible.builtin.systemd:
+    name: icinga-director
+    enabled: yes
+    masked: no
+    state: started
+
+- name: "Check if DB needs kickstarting"
+  changed_when: kickstart.rc != 1
+  ansible.builtin.command: /bin/icingacli director kickstart required --verbose
+  register: kickstart
+  failed_when:
+    - kickstart.rc > 1
+
+- name: "Run Kickstart if needed"
+  when: kickstart.rc == 0
+  changed_when: kickstart.rc != 9999
+  ansible.builtin.command: /bin/icingacli director kickstart run --verbose
+  register: result_ks
+  notify: run deploy
+  failed_when:
+    - result_ks.rc > 0
+

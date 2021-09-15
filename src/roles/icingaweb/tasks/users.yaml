@@ -1,0 +1,5 @@
+- name: "Insert admin user (or update password)"
+  community.mysql.mysql_query:
+    login_db: icingaweb2
+    query: "INSERT INTO icingaweb_user (name, active, password_hash) VALUES ('{{ icingaweb_admin }}', 1, '{{ icingaweb_admin_password | password_hash('sha512') }}') ON DUPLICATE KEY UPDATE password_hash = '{{ icingaweb_admin_password | password_hash('sha512') }}'"
+  register: query

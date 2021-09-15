@@ -1,0 +1,14 @@
+- name: List DB tables
+  community.mysql.mysql_query:
+    login_db: "{{ icingaweb2_db }}"
+    query: SHOW tables
+  ignore_errors: true
+  register: tables
+
+- name: "Import DB if tables are empty"
+  when: tables.rowcount[0] | default(0) | int < 1
+  community.mysql.mysql_db:
+    name: "{{ icingaweb2_db }}"
+    state: import
+    target: "/usr/share/doc/icingaweb2/schema/mysql.schema.sql"
+    encoding: "utf8"

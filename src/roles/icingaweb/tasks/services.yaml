@@ -1,0 +1,16 @@
+- name: "enable service {{ item }}"
+  loop: 
+    - httpd
+    - php-fpm
+  ansible.builtin.service:
+    name: "{{ item }}"
+    state: started
+    enabled: true
+
+- name: "disable service {{ item }}"
+  loop: 
+    - firewalld
+  ansible.builtin.service:
+    name: "{{ item }}"
+    state: stopped
+    enabled: false

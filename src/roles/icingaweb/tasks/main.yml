@@ -1,0 +1,33 @@
+---
+- name: Install packages
+  import_tasks: packages.yaml
+
+- name: Prepare files
+  import_tasks: files.yaml
+
+- name: Prepare templates
+  import_tasks: templates.yaml
+
+- name: Prepare selinux
+  import_tasks: selinux.yaml
+
+- name: Prepare database
+  import_tasks: db.yaml
+
+- name: Prepare users
+  import_tasks: users.yaml
+
+- name: Prepare services
+  import_tasks: services.yaml
+
+- name: Enable Monitoring module
+  import_tasks: monitoring_module.yaml
+
+- name: Enable Doc module
+  import_tasks: doc_module.yaml
+
+- name: Enable Incubator module
+  import_tasks: incubator_module.yaml
+
+- name: Enable Director module
+  import_tasks: director_module.yaml

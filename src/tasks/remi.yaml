@@ -1,0 +1,19 @@
+
+- name: Import REMI GPG key from a url
+  ansible.builtin.rpm_key:
+    state: present
+    key: "{{ remi_gpg_key }}"
+
+- name: Install REMI for recent php
+  ansible.builtin.dnf:
+    name: "{{ remi_rpm_release }}"
+    state: present
+    disable_gpg_check: yes
+
+- name: "Enable Remi PHP module"
+  ansible.builtin.template:
+    src: php.module.j2
+    dest: /etc/dnf/modules.d/php.module
+    owner: root
+    group: root
+    mode: '0644'
