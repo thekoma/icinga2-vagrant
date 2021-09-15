@@ -19,7 +19,7 @@ pip3 install --upgrade ansible
 ## Customization:
 To customize the playbook edit `src/extra_vars.yaml `.
 
-## Default:
+## Defaults:
 ```yaml
 ---
 # default vars for icingadb role
