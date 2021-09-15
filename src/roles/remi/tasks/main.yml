@@ -1,3 +1,5 @@
+---
+# tasks file for remi
 
 - name: Import REMI GPG key from a url
   ansible.builtin.rpm_key:

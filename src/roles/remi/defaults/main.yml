@@ -1,0 +1,5 @@
+---
+# defaults file for remi
+remi_php_version: "remi-8.0"
+remi_gpg_key: "https://rpms.remirepo.net/RPM-GPG-KEY-remi"
+remi_rpm_release: "https://rpms.remirepo.net/enterprise/remi-release-8.rpm"

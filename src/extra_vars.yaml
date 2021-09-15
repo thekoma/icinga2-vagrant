@@ -1,41 +1,26 @@
-remi_php_version: "remi-8.0"
-remi_gpg_key: "https://rpms.remirepo.net/RPM-GPG-KEY-remi"
-remi_rpm_release: "https://rpms.remirepo.net/enterprise/remi-release-8.rpm"
+---
+# # icingadb Role Variables
+# icingaweb2_db: icingaweb2
+# icingaweb2_db_user: icingaweb2
+# icingaweb2_db_password: icingaweb2
+# icinga_ido_db: icinga2
+# icinga_ido_user: icinga2
+# icinga_ido_password: icinga2
+# icinga_director_db: icingadirector
+# icinga_director_db_user: icingadirector
+# icinga_director_db_password: icingadirector
 
-icingaweb_admin: admin
-icingaweb_admin_password: password
-icingaweb2_db: icingaweb2
-icingaweb2_db_user: icingaweb2
-icingaweb2_db_password: icingaweb2
-icinga_ido_db: icinga2
-icinga_ido_user: icinga2
-icinga_ido_password: icinga2
-icinga_director_db: icingadirector
-icinga_director_db_user: icingadirector
-icinga_director_db_password: icingadirector
-icinga_monitoring_module_apiuser: monitoring-module
-icinga_monitoring_module_apiuser_password : youreallyneedtochangeme
-icinga_director_apiuser: director-module
-icinga_director_apiuser_password: youreallyneedtochangeme
+####
 
+# # icinga2 Role Variables
 icinga2_features:
   - name: checker
-  - name: command
+  # - name: command # Moved on API but here I wrote a patch https://github.com/Icinga/ansible-collection-icinga/pull/74
   - name: mainlog
   - name: notification
   - name: syslog
-    # - name: graphite
-    #   host: localhost
-    #   port: 3000
   - name: api
-    # force_newcert: true
     ca_host: none
-  #   # endpoints:
-  #   #   - name: NodeName
-  #   # zones:
-  #   #   - name: ZoneName
-  #   #     endpoints:
-  #   #       - NodeName
   - name: idomysql
     host: localhost
     port: 3306
@@ -46,3 +31,19 @@ icinga2_features:
     cleanup:
       downtimehistory_age: 48h
       contactnotifications_age: 31d
+
+####
+
+# # defaults file for icingaweb
+# icinga_monitoring_module_apiuser: monitoring-module
+# icinga_monitoring_module_apiuser_password : youreallyneedtochangeme
+# icinga_director_apiuser: director-module
+# icinga_director_apiuser_password: youreallyneedtochangeme
+# icingaweb_admin: admin
+# icingaweb_admin_password: password
+
+# director_repo: "https://github.com/icinga/icingaweb2-module-director"
+# director_version: "1.8.1"
+
+# incubator_repo: "https://github.com/icinga/icingaweb2-module-incubator"
+# incubator_version: "0.6.0"

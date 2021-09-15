@@ -1,2 +1,14 @@
 ---
 # defaults file for icingaweb
+icinga_monitoring_module_apiuser: monitoring-module
+icinga_monitoring_module_apiuser_password : youreallyneedtochangeme
+icinga_director_apiuser: director-module
+icinga_director_apiuser_password: youreallyneedtochangeme
+icingaweb_admin: admin
+icingaweb_admin_password: password
+
+director_repo: "https://github.com/icinga/icingaweb2-module-director"
+director_version: "1.8.1"
+
+incubator_repo: "https://github.com/icinga/icingaweb2-module-incubator"
+incubator_version: "0.6.0"

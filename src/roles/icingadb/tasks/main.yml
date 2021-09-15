@@ -1,3 +1,5 @@
+---
+# tasks file for icingadb
 - name: Install dependencies
   ansible.builtin.dnf:
     name: 
@@ -19,7 +21,6 @@
     state: present
     encoding: "utf8"
 
-
 - name: "Create database user {{ icinga_ido_user }}"
   community.mysql.mysql_user:
     name: "{{ icinga_ido_user }}"
@@ -34,7 +35,6 @@
     state: present
     encoding: "utf8"
 
-
 - name: "Create database user {{ icingaweb2_db_user }}"
   community.mysql.mysql_user:
     name: "{{ icingaweb2_db_user }}"
@@ -48,7 +48,6 @@
     name: "{{ icinga_director_db }}"
     state: present
     encoding: "utf8"
-
 
 - name: "Create database user {{ icinga_director_db_user }}"
   community.mysql.mysql_user:
