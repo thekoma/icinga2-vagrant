@@ -4,3 +4,6 @@ icinga2.code-workspace
 ansible.cfg
 mitogen
 pip-release.txt
+.envrc
+src/files/certs
+trash

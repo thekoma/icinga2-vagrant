@@ -1,0 +1,57 @@
+- name: "Install repos and basic utils"
+  hosts: all
+  become: true
+  collections:
+    - icinga.icinga
+    - ansible.posix
+  roles:
+    - repos
+    - mafalb.epel.release
+    - mafalb.epel.next
+    - common-settings
+
+
+- name: "Install remi repo and databases"
+  hosts: master
+  become: true
+  collections:
+    - icinga.icinga
+    - community.mysql
+    - ansible.posix
+  roles:
+    - remi
+    - icingadb
+
+- name: "Install icinga2"
+  hosts: all
+  order: sorted
+  serial:
+    - 1
+  become: true
+  collections:
+    - icinga.icinga
+    - ansible.posix
+    - community.general
+  roles:
+    - icinga2
+  pre_tasks:
+
+    - name: Setting host facts using complex arguments
+      when: "'masters' not in group_names"
+      set_fact:
+        icinga2_features: "{{ satellite_icinga2_features }}"
+
+    - name: Setting host facts using complex arguments
+      when: "'masters' in group_names"
+      set_fact:
+        icinga2_features: "{{ master_icinga2_features }}"
+
+- name: "Install icingaweb2 director and other modules"
+  hosts: master
+  become: true
+  collections:
+    - community.mysql
+    - ansible.posix
+  roles:
+    - icingaweb
+

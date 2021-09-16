@@ -1,4 +1,4 @@
-- name: "install icingaweb2 and goodies"
+- name: "install icingaweb2 git and php modules"
   ansible.builtin.dnf:
     name: 
       - php-pecl-imagick
@@ -6,3 +6,4 @@
       - icingaweb2
       - git
     state: present
+    disable_gpg_check: yes

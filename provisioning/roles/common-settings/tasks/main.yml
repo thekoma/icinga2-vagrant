@@ -1,0 +1,17 @@
+---
+# tasks file for common
+- name: "Put SELinux in permissive mode, logging actions that would be blocked."
+  ansible.posix.selinux:
+    policy: targeted
+    state: permissive
+    
+- name: "Install nagios plugins and host utilities."
+  ansible.builtin.dnf:
+    name: 
+      - nagios-plugins-all
+      - htop
+    state: present
+    enablerepo:
+      - epel-testing
+      - powertools
+    disable_gpg_check: yes
