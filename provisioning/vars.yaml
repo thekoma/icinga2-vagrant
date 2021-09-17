@@ -8,6 +8,24 @@ master_icinga2_features:
   - name: syslog
   - name: api
     ca_host: none
+    endpoints:
+      - name: "{{ ansible_hostname }}"
+        port: 5665
+        host: "{{ ansible_hostname }}"
+      - name: satellite-1
+        port: 5665
+        host: satellite-1
+    zones:
+      # - name: satellites
+      #   parent: masters
+      #   endpoints:
+      #     - "satellite-1"
+      - name: masters
+        endpoints:
+          - "master"
+      - name: director-global
+        global: true
+
   - name: idomysql
     host: localhost
     port: 3306
@@ -29,10 +47,22 @@ satellite_icinga2_features:
   - name: syslog
   - name: api
     ca_host: "master"
+    accept_config: true
     endpoints:
-      - name: "master"
+      - name: "{{ ansible_hostname }}"
+        port: 5665
+        host: "{{ ansible_hostname }}"
+      - name: master
+        port: 5665
+        host: master
     zones:
-      - name: "master"
+      - name: director-global
+        global: true
+      # - name: satellites
+      #   parent: masters
+      #   endpoints:
+      #     - "satellite-1"
+      - name: masters
         endpoints:
           - "master"
 

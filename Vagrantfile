@@ -3,8 +3,11 @@
 
 Vagrant.configure("2") do |config|
 
-  config.vagrant.plugins = [ "vagrant-env", "vagrant-recreate", "vagrant-libvirt", "vagrant-mutate" ]
-  config.env.enable
+  # config.vagrant.plugins = [ "vagrant-env", "vagrant-recreate", "vagrant-libvirt", "vagrant-mutate" ]
+  # config.vagrant.plugins = [ "vagrant-libvirt" ]
+  config.hostmanager.enabled = true
+  config.hostmanager.manage_host = false
+  config.hostmanager.manage_guest = true
 
   config.vm.define "master" do |master|
     master.vm.box          = "centos/stream8"
